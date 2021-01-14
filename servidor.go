@@ -6,20 +6,20 @@ import (
 	"net/http"
 )
 
-// ArmazenamentoJogador armazena a pontuação dos jogadores
+// ArmazenamentoJogador stores pontuacao information about jogadores
 type ArmazenamentoJogador interface {
 	ObterPontuacaoDeJogador(nome string) int
 	GravarVitoria(nome string)
 	ObterLiga() Liga
 }
 
-// Jogador armazena o nome com o número de vitórias
+// Jogador stores a nome with a number of wins
 type Jogador struct {
 	Nome              string
 	ChamadasDeVitoria int
 }
 
-// ServidorJogador é uma interface HTTP para informação do jogador
+// ServidorJogador is a HTTP interface for jogador information
 type ServidorJogador struct {
 	armazenamento ArmazenamentoJogador
 	http.Handler
@@ -27,7 +27,7 @@ type ServidorJogador struct {
 
 const tipoConteudoJSON = "application/json"
 
-// NovoServidorJogador cria um ServidorJogador com rotas configuradas
+// NovoServidorJogador creates a ServidorJogador with routing configured
 func NovoServidorJogador(armazenamento ArmazenamentoJogador) *ServidorJogador {
 	p := new(ServidorJogador)
 

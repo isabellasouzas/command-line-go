@@ -20,7 +20,7 @@ func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(jogador))
 	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(jogador))
 
-	t.Run("retorna os pontos", func(t *testing.T) {
+	t.Run("get pontuacao", func(t *testing.T) {
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, newGetScoreRequest(jogador))
 		assertStatus(t, response.Code, http.StatusOK)
@@ -28,7 +28,7 @@ func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 		assertResponseBody(t, response.Body.String(), "3")
 	})
 
-	t.Run("retorna a liga", func(t *testing.T) {
+	t.Run("get liga", func(t *testing.T) {
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, newLeagueRequest())
 		assertStatus(t, response.Code, http.StatusOK)

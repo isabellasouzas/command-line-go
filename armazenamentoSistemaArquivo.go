@@ -34,6 +34,27 @@ func NovoArmazenamentoSistemaDeArquivodeJogador(arquivo *os.File) (*SistemaDeArq
 	}, nil
 }
 
+// ArmazenamentoSistemaDeArquivoJogadorAPartirDeArquivo cria uma ArmazenamentoJogador a partir do conteúdo de um aquivo JSON encontrado no caminho fornecido
+func ArmazenamentoSistemaDeArquivoJogadorAPartirDeArquivo(path string) (*SistemaDeArquivoArmazenamentoJogador, func(), error) {
+	db, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0666)
+
+	if err != nil {
+		return nil, nil, fmt.Errorf("falha ao abrir %s %v", path, err)
+	}
+
+	closeFunc := func() {
+		db.Close()
+	}
+
+	armazenamento, err := NovoArmazenamentoSistemaDeArquivodeJogador(db)
+
+	if err != nil {
+		return nil, nil, fmt.Errorf("falha ao criar sistema de arquivos para armazenar jogadores, %v ", err)
+	}
+
+	return armazenamento, closeFunc, nil
+}
+
 func inicializarArquivoDBJogador(arquivo *os.File) error {
 	arquivo.Seek(0, 0)
 

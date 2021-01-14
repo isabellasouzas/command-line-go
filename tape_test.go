@@ -20,6 +20,6 @@ func TestTape_Write(t *testing.T) {
 	esperado := "abc"
 
 	if obtido != esperado {
-		t.Errorf("recebi '%s' esperava '%s'", obtido, esperado)
+		t.Errorf("obtido '%s' esperado '%s'", obtido, esperado)
 	}
 }

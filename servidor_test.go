@@ -9,25 +9,6 @@ import (
 	"testing"
 )
 
-type EsbocoArmazenamentoJogador struct {
-	scores            map[string]int
-	ChamadasDeVitoria []string
-	liga              []Jogador
-}
-
-func (s *EsbocoArmazenamentoJogador) ObterPontuacaoDeJogador(nome string) int {
-	pontuacao := s.scores[nome]
-	return pontuacao
-}
-
-func (s *EsbocoArmazenamentoJogador) GravarVitoria(nome string) {
-	s.ChamadasDeVitoria = append(s.ChamadasDeVitoria, nome)
-}
-
-func (s *EsbocoArmazenamentoJogador) ObterLiga() Liga {
-	return s.liga
-}
-
 func TestGETPlayers(t *testing.T) {
 	armazenamento := EsbocoArmazenamentoJogador{
 		map[string]int{
@@ -86,14 +67,7 @@ func TestStoreWins(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		assertStatus(t, response.Code, http.StatusAccepted)
-
-		if len(armazenamento.ChamadasDeVitoria) != 1 {
-			t.Fatalf("recebi %d chamadas de GravarVitoria esperava %d", len(armazenamento.ChamadasDeVitoria), 1)
-		}
-
-		if armazenamento.ChamadasDeVitoria[0] != jogador {
-			t.Errorf("não armazenou o vencedor correto recebi '%s' esperava '%s'", armazenamento.ChamadasDeVitoria[0], jogador)
-		}
+		VerificaVitoriaJogador(t, &armazenamento, jogador)
 	})
 }
 
